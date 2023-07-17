@@ -28,6 +28,7 @@ namespace Task32.MVC
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<BlogContext>(options => options.UseSqlServer(connection));
+            services.AddSingleton<IBlogRepository, BlogRepository>();
             services.AddControllersWithViews();
         }
 
