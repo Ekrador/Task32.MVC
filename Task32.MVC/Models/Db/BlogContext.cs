@@ -10,7 +10,7 @@ namespace Task32.MVC.Models.Db
     {
         /// Ссылка на таблицу Users
         public DbSet<User> Users { get; set; }
-
+        public DbSet<Request> Requests { get; set; }
         /// Ссылка на таблицу UserPosts
         public DbSet<UserPost> UserPosts { get; set; }
 

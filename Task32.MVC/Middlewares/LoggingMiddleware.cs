@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System;
 using System.IO;
+using Task32.MVC.Models.Db;
+using System.Security.Policy;
 
 namespace Task32.Middlewares
 {
@@ -30,10 +32,15 @@ namespace Task32.Middlewares
             await File.AppendAllTextAsync(logFilePath, logMessage);
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        private async Task LogDB(HttpContext context, ILoggingRepository logRequests)
+        {
+           await logRequests.Log(new Request() { Url = $"http://{context.Request.Host.Value + context.Request.Path}" });
+        }
+        public async Task InvokeAsync(HttpContext context, ILoggingRepository logRequests)
         {
             LogConsole(context);
             await LogFile(context);
+            await LogDB(context, logRequests);
             await _next.Invoke(context);
         }
     }

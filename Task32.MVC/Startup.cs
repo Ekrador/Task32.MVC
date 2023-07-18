@@ -29,6 +29,7 @@ namespace Task32.MVC
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<BlogContext>(options => options.UseSqlServer(connection));
             services.AddScoped<IBlogRepository, BlogRepository>();
+            services.AddScoped<ILoggingRepository, LoggingRepository>();
             services.AddControllersWithViews();
         }
 
@@ -58,6 +59,10 @@ namespace Task32.MVC
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "Logs",
+                    pattern: "logs",
+                    defaults: new { controller = "Home", action = "Logs" });
             });
         }
     }
