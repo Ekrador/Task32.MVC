@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading.Tasks;
 
 namespace Task32.MVC.Models.Db
@@ -16,6 +17,9 @@ namespace Task32.MVC.Models.Db
 
         public async Task AddUser(User user)
         {
+            user.JoinDate = DateTime.Now;
+            user.Id = Guid.NewGuid();
+
             // Добавление пользователя
             var entry = _context.Entry(user);
             if (entry.State == EntityState.Detached)
@@ -23,6 +27,11 @@ namespace Task32.MVC.Models.Db
 
             // Сохранение изенений
             await _context.SaveChangesAsync();
+        }
+        public async Task<User[]> GetUsers()
+        {
+            // Получим всех активных пользователей
+            return await _context.Users.ToArrayAsync();
         }
     }
 
